@@ -7,4 +7,8 @@ SELECT
     SUM(CASE WHEN Order_Date >= DATE('2026-05-30', '-30 day') THEN Order_Value ELSE 0 END) AS ValueSpend30d
 
 FROM sales
+
+WHERE Order_Date < '2026-05-30'
+    AND Order_Date >= DATE('2026-05-30', '-30 day') 
+
 GROUP BY Customer_ID
