@@ -4,11 +4,11 @@ SELECT
     SUM(CASE WHEN Order_Date >= DATE('2026-05-30', '-7 day') THEN Order_Value ELSE 0 END) AS ValueSpend7d,
     SUM(CASE WHEN Order_Date >= DATE('2026-05-30', '-14 day') THEN Order_Value ELSE 0 END) AS ValueSpend14d,
     SUM(CASE WHEN Order_Date >= DATE('2026-05-30', '-21 day') THEN Order_Value ELSE 0 END) AS ValueSpend21d,
-    SUM(CASE WHEN Order_Date >= DATE('2026-05-30', '-30 day') THEN Order_Value ELSE 0 END) AS ValueSpend30d
+    SUM(CASE WHEN Order_Date >= DATE('2026-05-30', '-28 day') THEN Order_Value ELSE 0 END) AS ValueSpend28d
 
 FROM sales
 
 WHERE Order_Date < '2026-05-30'
-    AND Order_Date >= DATE('2026-05-30', '-30 day') 
+    AND Order_Date >= DATE('2026-05-30', '-28 day') 
 
 GROUP BY Customer_ID

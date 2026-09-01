@@ -4,7 +4,7 @@ WITH rownumber AS (
         ROW_NUMBER() OVER(PARTITION BY Customer_ID ORDER BY Order_Date DESC, Order_Time DESC) AS rn
     FROM sales
     WHERE Order_Date < '2026-05-30'
-    AND Order_Date >= DATE('2026-05-30', '-30 day') 
+    AND Order_Date >= DATE('2026-05-30', '-28 day') 
     ),
 
 quant AS (
@@ -28,7 +28,7 @@ LEFT JOIN products as t2
 ON t1.Product_ID = t2.Product_ID
 
 WHERE Order_Date < '2026-05-30'
-    AND Order_Date >= DATE('2026-05-30', '-30 day')
+    AND Order_Date >= DATE('2026-05-30', '-28 day')
 
 GROUP BY t1.Customer_ID
 ),
@@ -51,7 +51,7 @@ favcat AS (
         ON t1.Product_ID = t2.Product_ID
 
     WHERE t1.Order_Date < '2026-05-30'
-      AND t1.Order_Date >= DATE('2026-05-30', '-30 day')
+      AND t1.Order_Date >= DATE('2026-05-30', '-28 day')
 
     GROUP BY
         t1.Customer_ID,
@@ -76,7 +76,7 @@ favbrand AS (
         ON t1.Product_ID = t2.Product_ID
 
     WHERE t1.Order_Date < '2026-05-30'
-      AND t1.Order_Date >= DATE('2026-05-30', '-30 day')
+      AND t1.Order_Date >= DATE('2026-05-30', '-28 day')
 
     GROUP BY
         t1.Customer_ID,

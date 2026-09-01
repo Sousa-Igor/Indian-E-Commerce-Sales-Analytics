@@ -8,7 +8,7 @@ WITH row_number AS (
                         ORDER BY Order_Date DESC, Order_Time DESC) AS rn
     FROM sales
     WHERE Order_Date < '2026-05-30'
-    AND Order_Date >= DATE('2026-05-30', '-30 day') 
+    AND Order_Date >= DATE('2026-05-30', '-28 day') 
 ),
 
 penult_purchase AS (
@@ -71,12 +71,12 @@ SELECT
         CASE WHEN Order_Date >= DATE('2026-05-30', '-7 day') THEN MAX(Order_Value) ELSE 0 END AS MaxValue7d,
         CASE WHEN Order_Date >= DATE('2026-05-30', '-14 day') THEN MAX(Order_Value) ELSE 0 END AS MaxValue14d,
         CASE WHEN Order_Date >= DATE('2026-05-30', '-21 day') THEN MAX(Order_Value) ELSE 0 END AS MaxValue21d,
-        CASE WHEN Order_Date >= DATE('2026-05-30', '-30 day') THEN MAX(Order_Value) ELSE 0 END AS MaxValue30d,
+        CASE WHEN Order_Date >= DATE('2026-05-30', '-28 day') THEN MAX(Order_Value) ELSE 0 END AS MaxValue28d,
 
         CASE WHEN Order_Date >= DATE('2026-05-30', '-7 day') THEN MIN(Order_Value) ELSE 0 END AS MinValue7d,
         CASE WHEN Order_Date >= DATE('2026-05-30', '-14 day') THEN MIN(Order_Value) ELSE 0 END AS MinValue14d,
         CASE WHEN Order_Date >= DATE('2026-05-30', '-21 day') THEN MIN(Order_Value) ELSE 0 END AS MinValue21d,
-        CASE WHEN Order_Date >= DATE('2026-05-30', '-30 day') THEN MIN(Order_Value) ELSE 0 END AS MinValue30d,
+        CASE WHEN Order_Date >= DATE('2026-05-30', '-28 day') THEN MIN(Order_Value) ELSE 0 END AS MinValue28d,
 
         t2.Days_penult_purchase,
         t3.LastPurchaseValue,
@@ -95,6 +95,6 @@ SELECT
 
 
     WHERE Order_Date < '2026-05-30'
-    AND Order_Date >= DATE('2026-05-30', '-30 day')
+    AND Order_Date >= DATE('2026-05-30', '-28 day')
     GROUP BY t1.Customer_ID
 

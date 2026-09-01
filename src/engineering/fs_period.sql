@@ -9,7 +9,7 @@ WITH period AS (
         END AS Period
     FROM sales
     WHERE Order_Date < '2026-05-30'
-        AND Order_Date >= DATE('2026-05-30', '-30 day') 
+        AND Order_Date >= DATE('2026-05-30', '-28 day') 
 ),
 rank AS (
     SELECT  
