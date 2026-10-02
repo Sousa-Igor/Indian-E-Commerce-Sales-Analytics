@@ -43,6 +43,3 @@ for i in tabelas:
         df = pd.read_sql(query, engine)
         df.to_sql(f'{i}', target, index=False, if_exists='append')
 
-#%%
-dt.datetime.strptime('2024-06-01', '%Y-%m-%d')
-dt.timedelta()
