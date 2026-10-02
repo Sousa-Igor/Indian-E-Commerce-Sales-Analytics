@@ -1,2 +1,2 @@
-*.db filter=lfs diff=lfs merge=lfs -text
+abt.db filter=lfs diff=lfs merge=lfs -text
 data/abt.db filter=lfs diff=lfs merge=lfs -text
