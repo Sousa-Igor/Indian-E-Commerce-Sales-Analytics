@@ -1,7 +1,7 @@
 SELECT 
-    '2026-05-30' as DtRef,
-    *,
-    ROUND((julianday('2026-05-30') - julianday(Registration_Date)), 2) as Registration_Days,
-    ROUND(((julianday('2026-05-30') - julianday(Registration_Date)) / 365), 2) as Registration_Age,
+    '2025-01-01' AS DtRef,
+    Customer_ID,
+    ROUND((julianday('2025-01-01') - julianday(Registration_Date)), 2) as Registration_Days,
+    ROUND(((julianday('2025-01-01') - julianday(Registration_Date)) / 365), 2) as Registration_Age,
     COALESCE(ROUND((Total_Spent / Total_Orders), 2), 0) as Spent_Orders
 FROM customers

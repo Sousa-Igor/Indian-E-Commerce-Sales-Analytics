@@ -8,8 +8,8 @@ WITH period AS (
             WHEN Order_Time BETWEEN '18:00:00' AND '23:59:59' THEN 'Noite' 
         END AS Period
     FROM sales
-    WHERE Order_Date < '2026-05-30'
-        AND Order_Date >= DATE('2026-05-30', '-28 day') 
+    WHERE Order_Date < '{date}'
+        AND Order_Date >= DATE('{date}', '-28 day') 
 ),
 rank AS (
     SELECT  
@@ -24,7 +24,8 @@ rank AS (
     ORDER BY RankPeriod DESC
 )
 
-SELECT 
+SELECT
+    '{date}' AS DtRef,
     Customer_ID,
     CASE
         WHEN COUNT(*) > 1 THEN 'SP' ELSE max(Period)

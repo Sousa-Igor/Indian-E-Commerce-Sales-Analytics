@@ -7,11 +7,12 @@ FROM customers
 
 LEFT JOIN sales 
 ON customers.Customer_ID = sales.Customer_ID
-AND sales.Order_Date > '2026-05-30'
+AND sales.Order_Date > '{date}'
 
 ORDER BY Order_Date)
 
 SELECT
+    '{date}' AS DtRef,
     Customer_ID,
     CASE
         WHEN COUNT(Order_ID) = 0 THEN 1 ELSE 0

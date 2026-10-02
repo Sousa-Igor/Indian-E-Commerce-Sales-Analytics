@@ -3,8 +3,8 @@ WITH rownumber AS (
         *,
         ROW_NUMBER() OVER(PARTITION BY Customer_ID ORDER BY Order_Date DESC, Order_Time DESC) AS rn
     FROM sales
-    WHERE Order_Date < '2026-05-30'
-    AND Order_Date >= DATE('2026-05-30', '-28 day') 
+    WHERE Order_Date < '{date}'
+    AND Order_Date >= DATE('{date}', '-28 day') 
     ),
 
 quant AS (
@@ -27,8 +27,8 @@ FROM sales AS t1
 LEFT JOIN products as t2
 ON t1.Product_ID = t2.Product_ID
 
-WHERE Order_Date < '2026-05-30'
-    AND Order_Date >= DATE('2026-05-30', '-28 day')
+WHERE Order_Date < '{date}'
+    AND Order_Date >= DATE('{date}', '-28 day')
 
 GROUP BY t1.Customer_ID
 ),
@@ -50,8 +50,8 @@ favcat AS (
     LEFT JOIN products AS t2
         ON t1.Product_ID = t2.Product_ID
 
-    WHERE t1.Order_Date < '2026-05-30'
-      AND t1.Order_Date >= DATE('2026-05-30', '-28 day')
+    WHERE t1.Order_Date < '{date}'
+      AND t1.Order_Date >= DATE('{date}', '-28 day')
 
     GROUP BY
         t1.Customer_ID,
@@ -75,8 +75,8 @@ favbrand AS (
     LEFT JOIN products AS t2
         ON t1.Product_ID = t2.Product_ID
 
-    WHERE t1.Order_Date < '2026-05-30'
-      AND t1.Order_Date >= DATE('2026-05-30', '-28 day')
+    WHERE t1.Order_Date < '{date}'
+      AND t1.Order_Date >= DATE('{date}', '-28 day')
 
     GROUP BY
         t1.Customer_ID,
@@ -103,6 +103,7 @@ WHERE fc.rn = 1
 )
 
 SELECT 
+    '{date}' AS DtRef,
     t1.*,
     t2.QtdCategory,
     t2.QtdBrand,
