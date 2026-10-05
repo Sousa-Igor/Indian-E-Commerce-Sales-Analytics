@@ -1,16 +1,21 @@
 #%%
 import pandas as pd
 import sqlalchemy
+import datetime as dt
 
 from sklearn import model_selection
+from sklearn import tree
+from sklearn import metrics
+from sklearn import ensemble
 
 from feature_engine import imputation
 from feature_engine import encoding
 
+pd.set_option('display.max_rows', 100)
 
 #%%
 con = sqlalchemy.create_engine('sqlite:///../../data/abt.db')
-df = pd.read_sql('abt', con)
+df = pd.read_sql('select * from abt', con)
 df.head()
 
 
@@ -26,9 +31,12 @@ features.remove(target)
 df_train_test = df[df['DtRef'] < df['DtRef'].max()].reset_index(drop = True)
 
 y = df_train_test[target]
-X = df_train_test.drop(columns = target)
+X = df_train_test[features]
+X.columns = X.columns.astype(str)
 X.head()
 
+y_oot = df_oot[target]
+X_oot = df_oot[features]
 #%%
 
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X,
@@ -82,18 +90,43 @@ imput_0 = imputation.ArbitraryNumberImputer(arbitrary_number=0,
 
 imput_1000 = imputation.ArbitraryNumberImputer(arbitrary_number=1000,
                                                variables=['Days_penult_purchase','AvgDaysBetweenPurchases'])
+# MODIFY - ONEHOT
+onehot = encoding.OneHotEncoder(variables=cat_features)
 
 
 # %%
 X_train_transform = imput_sp.fit_transform(X_train)
 X_train_transform = imput_0.fit_transform(X_train_transform)
 X_train_transform = imput_1000.fit_transform(X_train_transform)
-
-# %%
-# MODIFY - ONEHOT
-onehot = encoding.OneHotEncoder(variables=cat_features)
-# %%
 X_train_transform = onehot.fit_transform(X_train_transform)
 
-# %%
+
 # MODEL
+
+# %%
+model = ensemble.RandomForestClassifier(random_state=42)
+model.fit(X_train_transform,y_train)
+
+#%%
+y_train_proba = model.predict_proba(X_train_transform)
+predict_train = metrics.roc_auc_score(y_train, y_train_proba[:,1])
+
+X_test_transform = imput_sp.transform(X_test)
+X_test_transform = imput_0.transform(X_test_transform)
+X_test_transform = imput_1000.transform(X_test_transform)
+X_test_transform = onehot.transform(X_test_transform)
+y_test_proba = model.predict_proba(X_test_transform)
+predict_test = metrics.roc_auc_score(y_test, y_test_proba[:,1])
+
+X_oot_transform = imput_sp.transform(X_oot)
+X_oot_transform = imput_0.transform(X_oot_transform)
+X_oot_transform = imput_1000.transform(X_oot_transform)
+X_oot_transform = onehot.transform(X_oot_transform)
+y_oot_proba = model.predict_proba(X_oot_transform)
+predict_oot = metrics.roc_auc_score(y_oot, y_oot_proba[:,1])
+
+#%%
+print('Curva ROC do train: ', f'{predict_train}')
+print('Curva ROC do test: ', f'{predict_test}')
+print('Curva ROC do oot: ', f'{predict_oot}')
+# %%
