@@ -1,2 +1,4 @@
 abt.db filter=lfs diff=lfs merge=lfs -text
 data/abt.db filter=lfs diff=lfs merge=lfs -text
+*.sql linguist-language=SQL
+*.py linguist-language=Python
